@@ -6,7 +6,7 @@
 # Requires Figlet and it's Banner font - use Home Brew to install on Mac OS
 # Leading white-space intended to center display for 70 character wide terminal with
 #  24pt mono-space font which fits a default size, Zoom positionable screen share 
-# Only displays count down in hour and minutes (i.e., limited to 60 minute break)
+# Only displays count down in minutes and seconds (i.e., limited to 60 minute break)
 # Test your message as line wrapping will may occur with more than nine characters 
 #
 # This program is free software: you can redistribute it and/or modify it under
