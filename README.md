@@ -4,9 +4,9 @@ Shows current times for four mainland US time zones and when the conference will
 
 Requires [Figlet](https://github.com/cmatsuoka/figlet)
 
-Usage: breaktime <time, 24-hour> <message>
+Usage: `breaktime <time in 24-hour format> <message>`
 
-Example: ./breaktime 15:00 "Time's Up"
+Example: `./breaktime 15:00 "Time's Up"`
   
 ![Screen Shot](https://github.com/pkobezak/breaktime/raw/master/Screen-Shot.png)
 
