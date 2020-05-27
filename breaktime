@@ -1,0 +1,65 @@
+#!/bin/bash
+# breaktime - Conference break timer with restart times for four US time zones
+# May 27, 2020 - Philip Kobezak
+# 
+# For Mac OS or BSD-based 'date' command
+# Requires Figlet and it's Banner font - use Home Brew to install on Mac OS
+# Leading white-space intended to center display for 70 character wide terminal with
+#  24pt mono-space font which fits a default size, Zoom positionable screen share 
+# Only displays count down in hour and minutes (i.e., limited to 60 minute break)
+# Test your message as line wrapping will may occur with more than nine characters 
+#
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License, version 3, as published by the 
+# Free Software Foundation
+#
+# Check for two arguments: <start back time> and <count down end message>
+if [[ $# -ne 2 ]] ; then
+	echo "Usage: $0 <time, 24-hour> <message>"
+	echo -e "Example: $0 14:30 \"Time's up\""
+	echo "Requires Figlet for large character display"
+	exit 0
+fi
+# Clear the terminal and get the current time
+clear
+datetoday=`date +%Y-%m-%d`
+startbacktime=$((`date -j -f "%Y-%m-%d %H:%M:%S" "$datetoday $1:00" +"%s"`))
+# Determine the time until start back 
+timeleft=$(($startbacktime - `date +%s`))
+runonce=0
+estart=`date -j -f "%s" $startbacktime +"%T %Z"`
+cstart=`env TZ=CST6CDT date -j -f "%s" $startbacktime +"%T %Z"`
+mstart=`env TZ=MST7MDT date -j -f "%s" $startbacktime +"%T %Z"`
+pstart=`env TZ=PST8PDT date -j -f "%s" $startbacktime +"%T %Z"`
+echo -e "\n   Will resume at:"
+echo -e "   $pstart    $mstart    $cstart    $estart\n"
+while [ $timeleft -gt 0 ]; do 
+	ptime=`env TZ=PST8PDT date +"%T %Z"`
+	mtime=`env TZ=MST7MDT date +"%T %Z"`
+	ctime=`env TZ=CST6CDT date +"%T %Z"`
+	etime=`env TZ=EST5EDT date +"%T %Z"`
+	timeleft=$((startbacktime - `date +%s`))
+	# We do not want to move the cursor up 12 lines unless we have already run once
+	if [[ $runonce == 1 ]]; then
+		echo -e "\033[12A"
+	fi
+	# Show current times for the four zones
+	echo "   Current time:"
+	echo -e "   $ptime    $mtime    $ctime    $etime\n"
+	# This clears the display for update
+	if [[ $runonce == 1 ]]; then
+		echo "                                                                   "
+		echo "                                                                   "
+		echo "                                                                   "
+		echo "                                                                   "
+		echo "                                                                   "
+		echo "                                                                   "
+		echo "                                                                   "
+		echo -e "\033[8A"
+	fi
+	# Use Figlet to print time left for count down
+	figlet -W -f banner "   `date -j -f "%s" $timeleft +"%M:%S"`"
+	runonce=1
+	sleep 0.1
+done
+figlet -W -f banner "$2"
