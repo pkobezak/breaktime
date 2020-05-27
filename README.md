@@ -17,7 +17,7 @@ Current limitations
 * Message to be displayed at countdown end may wrap if more than nine characters
 
 Future work 
-* Have selectable time zones to disiplay
+* Have selectable time zones to display
 * Longer than 60 minutes countdown
 * Centering based on terminal size
 * Passthrough of Figlet font selection
